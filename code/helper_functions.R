@@ -21,19 +21,16 @@ bfdr = function(mppi_vector, threshold = 0.1){
   if(threshold > 1 | threshold < 0){
     stop("Bad input: threshold should be a probability")
   }
-  # pretty simple
-  onek = ((1 - mppi_vector) < threshold) + 0
-  # possible to select none
-  if(sum(onek) == 0){
-    selected = rep(FALSE, length(onek))
-    thecut = 0
-  }else{
-    thecut = sum((1 - mppi_vector) * onek)/sum(onek)
-    selected = (1 - mppi_vector) < thecut
-  }
-  return(list(selected = selected, threshold = 1 - thecut))
+  # sorting the ppi's in decresing order
+  sorted_mppi_vector=sort(mppi_vector, decreasing=TRUE)
+  # computing the fdr 
+  fdr <- cumsum((1-sorted_mppi_vector))/seq(1:length(mppi_vector))
+  # determine index of the largest fdr less than threshold
+  thecut.index=max(which(fdr<threshold))
+  ppi_threshold = sorted_mppi_vector[thecut.index]
+  selected = mppi_vector > ppi_threshold
+  return(list(selected = selected, threshold = ppi_threshold))
 }
-
 #' a bipartite graph showing the association between X and Y
 #'
 #' @note requires the igraph package
