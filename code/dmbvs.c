@@ -18,7 +18,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//    
+//
+// This version has been updated on October 2, 2017 with an implementation
+// of a stochastic search algorithm for Variable Selection in lieu of a 
+// Gibbs sampler
 // *********************************************************************** //
 // standard includes
 #include <time.h>
